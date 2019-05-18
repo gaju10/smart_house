@@ -7,13 +7,22 @@ class AuthRepository {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: [
       'email',
-      'https://www.googleapis.com/auth/contacts.readonly',
+      'https://www.googleapis.com/auth/',
     ],
   );
 
 
   Future<FirebaseUser> signInWithGoogle() async {
-    final GoogleSignInAccount googleUser = await _googleSignIn.signIn();
+    print('1');
+     GoogleSignInAccount googleUser;
+    try {
+       googleUser = await _googleSignIn.signIn();
+    }
+    catch (e){
+      print(e.toString());
+    }
+    print(googleUser);
+    print(2);
     final GoogleSignInAuthentication googleAuth =
     await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -21,6 +30,7 @@ class AuthRepository {
       idToken: googleAuth.idToken,
     );
     await _firebaseAuth.signInWithCredential(credential);
+    print(_firebaseAuth.currentUser().then((f)=>f.email));
     return _firebaseAuth.currentUser();
   }
 
