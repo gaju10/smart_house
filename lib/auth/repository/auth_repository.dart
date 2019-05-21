@@ -11,9 +11,7 @@ class AuthRepository {
     ],
   );
 
-
   Future<FirebaseUser> signInWithGoogle() async {
-    print('1');
      GoogleSignInAccount googleUser;
     try {
        googleUser = await _googleSignIn.signIn();
@@ -21,8 +19,6 @@ class AuthRepository {
     catch (e){
       print(e.toString());
     }
-    print(googleUser);
-    print(2);
     final GoogleSignInAuthentication googleAuth =
     await googleUser.authentication;
     final AuthCredential credential = GoogleAuthProvider.getCredential(
@@ -30,7 +26,7 @@ class AuthRepository {
       idToken: googleAuth.idToken,
     );
     await _firebaseAuth.signInWithCredential(credential);
-    print(_firebaseAuth.currentUser().then((f)=>f.email));
+
     return _firebaseAuth.currentUser();
   }
 
@@ -46,6 +42,11 @@ class AuthRepository {
       email: email,
       password: password,
     );
+  }
+  void setImage(){
+    _firebaseAuth.currentUser().then((firs){
+      firs.updateProfile(UserUpdateInfo());
+    });
   }
 
   Future<void> signOut() async {

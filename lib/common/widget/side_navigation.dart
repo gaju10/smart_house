@@ -25,8 +25,8 @@ class _SideNavigationState extends State<SideNavigation> {
         children: <Widget>[
           UserAccountsDrawerHeader(
             margin: EdgeInsets.zero,
-            accountEmail: Text('text@gmail'),
-            accountName: Text('dima'),
+            accountEmail: Text(_authBloc.currentState.firebaseUser.email),
+            accountName: Text(_authBloc.currentState.firebaseUser.displayName ?? 'your name'),
             decoration: BoxDecoration(color: Colors.blue),
           ),
           Column(
@@ -34,9 +34,7 @@ class _SideNavigationState extends State<SideNavigation> {
                 ListTile(
                   title: Text('Logout'),
                   onTap: () {
-                    _authBloc.dispatch(
-                      LogOut(),
-                    );
+                    _authBloc.dispatch(LogOut(),);
                     Navigator.pop(context);
                   }
                 ),
